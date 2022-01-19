@@ -11,4 +11,4 @@ Description
 The objective of this research effort is to uncover potential "removal-resistant" data poisoning in datasets. By performing random data corruption in datasets, we simulate the poisoning insertion and subsequent removal from a dataset. The PAC learning bounds of a PAC-learnable algorithm are then analysed to observe the behaviour of the true score against the non-noisy data.
 
 
-<sup><i>Jose E. Aguilar Escamilla -- Winter 2021 -- Gallgoly College of Engineering, School of Computer Science @ the University of Oklahoma (OU).</sup></i>
+<sup><i>Jose E. Aguilar Escamilla -- Spring 2022 -- Gallgoly College of Engineering, School of Computer Science @ the University of Oklahoma (OU).</sup></i>
