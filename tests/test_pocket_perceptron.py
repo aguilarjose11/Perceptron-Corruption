@@ -44,8 +44,8 @@ class TestPocketTraining:
 
         algo.learn(learn_xor_pocket["X"], learn_xor_pocket["y"])
 
-        assert algo.pi == learn_xor_pocket["pi"]
-        assert algo.W == learn_xor_pocket["W"]
+        assert (algo.pi == learn_xor_pocket["pi"]).all()
+        assert (algo.W == learn_xor_pocket["W"]).all()
         assert algo.run_pi == learn_xor_pocket["run_pi"]
         assert algo.run_W == learn_xor_pocket["run_W"]
         
@@ -59,4 +59,4 @@ class TestPocketTraining:
 
         algo.train(xor_perceptron["X"], xor_perceptron["y"])
 
-        assert algo.W != np.zeros((3, 1))
+        assert (algo.W != np.zeros((3, 1))).all()
