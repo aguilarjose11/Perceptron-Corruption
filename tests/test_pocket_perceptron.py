@@ -42,7 +42,7 @@ class TestPocketTraining:
             rand_seed   =37
         )
 
-        algo.learn(learn_xor_pocket["X"])
+        algo.learn(learn_xor_pocket["X"], learn_xor_pocket["y"])
 
         assert algo.pi == learn_xor_pocket["pi"]
         assert algo.W == learn_xor_pocket["W"]
