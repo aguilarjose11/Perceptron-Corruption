@@ -5,6 +5,17 @@ from typing import Union, List, Callable
 class PocketPerceptron:
     """ Learn using single-cell perceptron
     
+    Functions:
+    ----------
+
+    solve:
+    - Calculate perceptron inference.
+
+    train:
+    - Main training function implementing pocket algorithm.
+
+    learn:
+    - Implement core pocket algorithm.
     """
 
     def __init__(self, 
@@ -64,4 +75,7 @@ class PocketPerceptron:
     
     def train(self):
         """"""
+        pass
+
+    def learn(self):
         pass
