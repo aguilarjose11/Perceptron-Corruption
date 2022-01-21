@@ -2,6 +2,8 @@ import numpy as np
 
 from typing import Union, List, Callable
 
+array = np.array
+
 class PocketPerceptron:
     """ Learn using single-cell perceptron
     
@@ -44,6 +46,7 @@ class PocketPerceptron:
         rand_seed
         - Random seed for random iterator.
         """
+        self.input = input
         self.pi         = np.zeros((input, 1))
         self.W          = np.zeros((input, 1))
         self.run_pi     = 0
@@ -73,9 +76,41 @@ class PocketPerceptron:
         # X's shape is assumed to be 1xI
         return -1 if X @ self.W < 0 else +1
     
-    def train(self):
+    def train(self, X, y):
         """"""
         pass
 
-    def learn(self):
-        pass
+    def __num_ok(self,
+        X: array,
+        y: array
+        ):
+
+        self.num_ok_pi  = 0
+        self.num_ok_W   = 0
+        for E, C in zip(X, y):
+            pi_y    = -1 if E @ self.pi < 0 else +1
+            W_y     = -1 if E @ self.W < 0 else +1
+            self.num_ok_pi += 1 if pi_y == C else 0
+            self.num_ok_pi += 1 if W_y == C else 0
+
+    def learn(self, 
+        X: array, 
+        y: array
+        ):
+        for E, C in zip(X, y):
+            pi_C    = -1 if E @ self.pi < 0 else +1
+            if pi_C == C:
+                self.run_pi += 1
+                if self.run_pi > self.run_W:
+                    self.__num_ok(X, y)
+                    if self.num_ok_pi > self.num_ok_W:
+                        self.W = self.pi
+                        self.run_W = self.run_pi
+                        self.num_ok_W = self.num_ok_pi
+                        if self.num_ok_W == len(y):
+                            # Correct classification overall
+                            return True
+            else:
+                self.pi = self.pi + (C * E).reshape((self.input, 1))
+                self.run_pi = 0
+        return False
