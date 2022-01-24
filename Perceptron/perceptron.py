@@ -1,5 +1,5 @@
 import numpy as np
-
+import random
 from typing import Union, List, Callable
 
 array = np.array
@@ -78,7 +78,13 @@ class PocketPerceptron:
     
     def train(self, X, y):
         """"""
-        pass
+        for i in range(self.max_iter):
+            index = random.sample(range(len(X)), len(X))
+            E = X[index]
+            C = y[index]
+            if self.learn(E, C):
+                break
+
 
     def __num_ok(self,
         X: array,
@@ -91,12 +97,13 @@ class PocketPerceptron:
             pi_y    = -1 if E @ self.pi < 0 else +1
             W_y     = -1 if E @ self.W < 0 else +1
             self.num_ok_pi += 1 if pi_y == C else 0
-            self.num_ok_pi += 1 if W_y == C else 0
+            self.num_ok_W += 1 if W_y == C else 0
 
     def learn(self, 
         X: array, 
         y: array
         ):
+        #import pdb; pdb.set_trace()
         for E, C in zip(X, y):
             pi_C    = -1 if E @ self.pi < 0 else +1
             if pi_C == C:

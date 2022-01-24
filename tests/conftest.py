@@ -64,5 +64,5 @@ def learn_xor_pocket():
             [-1]
         ]),
         "run_pi": 0,
-        "run_W": 3,
+        "run_W": 1,
     }
