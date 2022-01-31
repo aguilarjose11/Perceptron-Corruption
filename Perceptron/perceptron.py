@@ -77,7 +77,7 @@ class PocketPerceptron:
         return -1 if X @ self.W < 0 else +1
     
     def train(self, X, y):
-        """"""
+        """Train Perceptron Model"""
         for i in range(self.max_iter):
             index = random.sample(range(len(X)), len(X))
             E = X[index]
@@ -90,6 +90,7 @@ class PocketPerceptron:
         X: array,
         y: array
         ):
+        """Calculate total number of correct values in entire dataset"""
 
         self.num_ok_pi  = 0
         self.num_ok_W   = 0
