@@ -1,6 +1,6 @@
 import numpy as np
 import random
-from typing import Union, List, Callable
+from typing import Tuple, Union, List, Callable
 
 array = np.array
 
@@ -122,3 +122,12 @@ class PocketPerceptron:
                 self.pi = self.pi + (C * E).reshape((self.input, 1))
                 self.run_pi = 0
         return False
+
+def true_error(dist: Tuple[List, List], model):
+    miss = 0
+    for E, C in dist:
+        y_pred = model.solve(E)
+        if y_pred != C:
+            miss += 1
+
+    return miss / len(dist[0])
