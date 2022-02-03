@@ -1,3 +1,4 @@
 # Meta folders
 venv
 __pycache__
+.ipynb_checkpoints/
