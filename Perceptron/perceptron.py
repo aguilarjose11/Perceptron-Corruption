@@ -74,7 +74,9 @@ class PocketPerceptron:
         Returns the linear combination's sign function
         """
         # X's shape is assumed to be 1xI
-        return -1 if X @ self.W < 0 else +1
+        activation = np.sign(X @ self.W)
+        activation[activation == 0] = -1
+        return activation
     
     def train(self, X, y):
         """Train Perceptron Model"""
