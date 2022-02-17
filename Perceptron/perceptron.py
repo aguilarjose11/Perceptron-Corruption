@@ -47,8 +47,8 @@ class PocketPerceptron:
         - Random seed for random iterator.
         """
         self.input = input
-        self.pi         = np.ones((input, 1))
-        self.W          = np.ones((input, 1))
+        self.pi         = np.random.rand(input, 1)
+        self.W          = np.random.rand(input, 1)
         self.run_pi     = 0
         self.run_W      = 0
         self.num_ok_pi  = 0
@@ -80,6 +80,8 @@ class PocketPerceptron:
     
     def train(self, X, y):
         """Train Perceptron Model"""
+        #import pdb; pdb.set_trace()
+        self.num_ok_pi = self.num_ok_W = self.run_pi = self.run_W = 0
         for i in range(self.max_iter):
             index = random.sample(range(len(X)), len(X))
             E = X[index]
@@ -87,6 +89,7 @@ class PocketPerceptron:
             if self.learn(E, C):
                 return
         print("Maximum iterations reached: No convergence. Ignore if data is non-separable")
+        #import pdb; pdb.set_trace()
 
 
     def __num_ok(self,
@@ -109,6 +112,7 @@ class PocketPerceptron:
         y: array
         ):
         #import pdb; pdb.set_trace()
+        
         for E, C in zip(X, y):
             z = E @ self.pi
             pi_C    = -1 if z < 0 else +1
@@ -116,7 +120,7 @@ class PocketPerceptron:
                 self.run_pi += 1
                 if self.run_pi > self.run_W:
                     self.__num_ok(X, y)
-                    if self.num_ok_pi > self.num_ok_W:
+                    if self.num_ok_pi >= self.num_ok_W:
                         self.W = self.pi
                         self.run_W = self.run_pi
                         self.num_ok_W = self.num_ok_pi
