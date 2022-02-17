@@ -47,8 +47,8 @@ class PocketPerceptron:
         - Random seed for random iterator.
         """
         self.input = input
-        self.pi         = np.zeros((input, 1))
-        self.W          = np.zeros((input, 1))
+        self.pi         = np.ones((input, 1))
+        self.W          = np.ones((input, 1))
         self.run_pi     = 0
         self.run_W      = 0
         self.num_ok_pi  = 0
@@ -85,7 +85,8 @@ class PocketPerceptron:
             E = X[index]
             C = y[index]
             if self.learn(E, C):
-                break
+                return
+        print("Maximum iterations reached: No convergence. Ignore if data is non-separable")
 
 
     def __num_ok(self,
