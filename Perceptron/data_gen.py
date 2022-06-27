@@ -1,7 +1,11 @@
 import numpy as np
 import random
-from typing import Tuple, Set, List
+from typing import Tuple, Set, List, Callable
 from .perceptron import PocketPerceptron
+
+
+sample = Tuple[float]
+
 
 class Universe:
     """Data universe creator."""
@@ -46,4 +50,21 @@ def separable_regression(
     y = model.solve(X)
 
     return X, y
+
+def data_distribution(
+    concept:      Callable[[sample], bool], 
+    bounds:       Tuple[Tuple[float, float]],
+    distribution: Callable[[None], float],
+    bias = True
+) -> Tuple[sample, bool]:
+    data_point = []
+    for a, b in bounds:
+        point = distribution() * abs(a - b) + a
+        data_point.append(point)
+    
+    if bias:
+            data_point += [1]
+    label = concept(data_point)
+
+    return data_point, label
 

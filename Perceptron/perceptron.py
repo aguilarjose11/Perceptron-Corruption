@@ -21,10 +21,11 @@ class PocketPerceptron:
     """
 
     def __init__(self, 
-    input: int      =10,
-    eta: float      =1,
-    max_iter: int   =1000,
-    rand_seed: int  =37):
+    input: int       =10,
+    eta: float       =1,
+    max_iter: int    =1000,
+    rand_seed: int   =37,
+    ignore_flag: bool=False):
         """Create pocket-trained perceptron
         
         Following Gallant's theory, initialize a perceptron
@@ -56,6 +57,7 @@ class PocketPerceptron:
         self.eta        = eta
         self.max_iter   = max_iter
         self.rand_seed  = rand_seed
+        self.ignore_flag= ignore_flag
     
     def solve(self, X) -> int:
         """Solve using pocket hypothesis
@@ -88,7 +90,8 @@ class PocketPerceptron:
             C = y[index]
             if self.learn(E, C):
                 return
-        print("Maximum iterations reached: No convergence. Ignore if data is non-separable")
+        if not self.ignore_flag:
+            print("Maximum iterations reached: No convergence. Ignore if data is non-separable")
         #import pdb; pdb.set_trace()
 
 
