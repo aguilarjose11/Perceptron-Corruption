@@ -25,7 +25,8 @@ class PocketPerceptron:
     eta: float       =1,
     max_iter: int    =1000,
     rand_seed: int   =37,
-    ignore_flag: bool=False):
+    ignore_flag: bool=False,
+    patience: int    =15):
         """Create pocket-trained perceptron
         
         Following Gallant's theory, initialize a perceptron
@@ -46,6 +47,12 @@ class PocketPerceptron:
 
         rand_seed
         - Random seed for random iterator.
+
+        ignore_flag
+        - Ignores warning given when convergance not reached.
+        
+        patience
+        - Number of consecutive times weights are unchanged to assume convergance.
         """
         self.input = input
         self.pi         = np.random.rand(input, 1)
@@ -58,6 +65,7 @@ class PocketPerceptron:
         self.max_iter   = max_iter
         self.rand_seed  = rand_seed
         self.ignore_flag= ignore_flag
+        self.patience   = patience
     
     def solve(self, X) -> int:
         """Solve using pocket hypothesis
@@ -83,12 +91,25 @@ class PocketPerceptron:
     def train(self, X, y):
         """Train Perceptron Model"""
         #import pdb; pdb.set_trace()
+        count_w = 0
         self.num_ok_pi = self.num_ok_W = self.run_pi = self.run_W = 0
         for i in range(self.max_iter):
+            prev_w = self.W # Used for patience
+            # Shuffle order in which training occurs
             index = random.sample(range(len(X)), len(X))
             E = X[index]
             C = y[index]
             if self.learn(E, C):
+                return
+            elif np.array_equal(prev_w, self.W):
+                # The parameters did not change!
+                count_w += 1
+            else:
+                # New parameters that were learned.
+                count_w = 0
+            # Have we converged?
+            if count_w >= self.patience:
+                # Patience reached, assume convergance has been achieved.
                 return
         if not self.ignore_flag:
             print("Maximum iterations reached: No convergence. Ignore if data is non-separable")
