@@ -15,6 +15,7 @@ import pandas as pd
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn import datasets
+from imblearn.over_sampling import SMOTE
 
 # Research Code
 import Perceptron.perceptron as pn
@@ -234,11 +235,12 @@ Upper bounds per dimension to use when using a synthetic dataset. Shall be a lis
     parser.add_argument('--eta', type=float, default=1, help='Learning rate of perceptron.' )
     parser.add_argument('--max_iter', type=int, default=1000, help='Maximum number of Perceptron iterations before convergance is assumed.')
     parser.add_argument('--w_init', nargs='+', type=float, default=[0.5, 0.5], help='Initial weight distribution [lower, upper] bounds.')
+    parser.add_argument('--smote', action='store_true', default=False, help='Flag for applying SMOTE for class imbalance.')
     # 
     parser.add_argument('-v', '--verbose',action='count', default=0, help='Verbosity of messages.' )
     parser.add_argument('-i', '--index', type=str, default='0', help='Inex of experiments. Helpful when running multiple repetitions of same experiment.')
     parser.add_argument('--result_root', type=str, default='.', help='Directory to store results.')
-    parser.add_argument('--save_model', action='store_true', default=True, help='Flag for saving model.')
+    parser.add_argument('--save_model', action='store_true', default=False, help='Flag for saving model.')
     parser.add_argument('-p', '--patience', type=int, help='Number of iterations where weights have not changed before assuming convergance.', default=20)
     parser.add_argument('-d', '--data', type=str, default=None, help='Specify a data file for provided data type.')
 
@@ -359,7 +361,9 @@ def obtain_data(args):
         labels.replace(1, 1, inplace=True)
     else:
         assert False, f"Invalid experiment selected: {experiment}"
-    
+    if args.smote:
+        sm = SMOTE(random_state=42)
+        data, labels = sm.fit_resample(data, labels)
     return data, labels
 
 
