@@ -29,6 +29,7 @@ def perceptron_data_corruption(
         verbose,
         history,
         seed,
+        return_model: bool=False,
         ):
         '''Corrupt given bucketized data
 
@@ -61,6 +62,10 @@ def perceptron_data_corruption(
         
         rng = np.random.default_rng(seed)
         L_values = []
+
+        if return_model:
+            best_score = None
+            best_pred  = None
         
         # Begin with high corruption and then add more buckets
         for buckets in tqdm(range(1, n_buckets + 1), disable=verbose >= 2):
@@ -87,26 +92,40 @@ def perceptron_data_corruption(
             score = accuracy_score(pred, test_labels)
             #score_list.append(score)
 
+            if return_model\
+                and best_score is None\
+                or best_score < score:
+                best_pred = {
+                    'X': test_data,
+                    'y': test_labels,
+                    'model': model,
+                    'score': score,
+                    'pred': pred,
+                }
+                best_score = score
+
             history[buckets].append(score)
             # Used by Gallant's learning bound.
             L_values.append(np.linalg.norm(model.W))
             
         history['L'].append(L_values)
-        
+        if return_model:
+            history['best_model'].append(best_pred)
+
         return history
     
 
-def perceptron_corruption_experiment(
-    X,
-    y,
-    test_size,
-    train_size,
-    n_buckets,
-    model_params,
-    n_runs,
-    seed,
-    verbose,
-    ):
+def perceptron_corruption_experiment(X,
+                                     y,
+                                     test_size,
+                                     train_size,
+                                     n_buckets,
+                                     model_params,
+                                     n_runs,
+                                     seed,
+                                     verbose,
+                                     return_model: bool=False,
+                                     ):
     '''Conduct corruption experiment and report results
     
     parameters
@@ -139,6 +158,8 @@ def perceptron_corruption_experiment(
     history   = {buckets: [] for buckets in range(1, n_buckets + 1)} # +1 for no corruption
     # Magnitude of learned vector. Will contain lists of magnitudes.
     history['L'] = []
+    if return_model:
+        history['best_model'] = []
     
 
     
@@ -173,6 +194,7 @@ def perceptron_corruption_experiment(
             verbose,
             history,
             seed=run + seed,
+            return_model=return_model,
         )
         
     return history
@@ -216,6 +238,7 @@ Upper bounds per dimension to use when using a synthetic dataset. Shall be a lis
     parser.add_argument('-v', '--verbose',action='count', default=0, help='Verbosity of messages.' )
     parser.add_argument('-i', '--index', type=str, default='0', help='Inex of experiments. Helpful when running multiple repetitions of same experiment.')
     parser.add_argument('--result_root', type=str, default='.', help='Directory to store results.')
+    parser.add_argument('--save_model', action='store_true', default=True, help='Flag for saving model.')
     parser.add_argument('-p', '--patience', type=int, help='Number of iterations where weights have not changed before assuming convergance.', default=20)
     parser.add_argument('-d', '--data', type=str, default=None, help='Specify a data file for provided data type.')
 
@@ -379,9 +402,10 @@ if __name__ == '__main__':
         n_runs          = args.n_runs,
         seed            = 42,
         verbose         = args.verbose,
+        return_model    = args.save_model
     )
     
-    # Save experiment
+    # Save experiment. If saving model, see history['best_model']
     pickle_data = {
         'history':    history,
         'n_data':     data.shape[0], # We know from data-set description. 

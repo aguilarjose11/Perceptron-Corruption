@@ -13,7 +13,8 @@
 echo start time
 date
 
-source activate tda-gpu
+# Schooner's environment is: tda-gpu
+source activate torch-gpu
 
 export MKL_NUM_THREADS=4
 export NUMEXPR_NUM_THREADS=4
@@ -24,11 +25,11 @@ EXPERIMENT="SPECT"
 
 # For SLURM only. It will help in parallel execution. See --array param.
 # Remember that --index is simply an output file index value.
-EXP_NUMBER=$SLURM_ARRAY_TASK_ID
-INDEXLABEL=$EXP_NUMBER
+#EXP_NUMBER=$SLURM_ARRAY_TASK_ID
+#INDEXLABEL=$EXP_NUMBER
 
 # For local execution only. Comment out if in schooner.
-#INDEXLABEL=debugging
+INDEXLABEL=debugging
 
 # Experiment set up
 BUCKETS=100
@@ -41,7 +42,7 @@ PATIENCE=40
 RESROOT=results # DO NOT forget to create the directory!
 TESTFRACT=0.2
 
-python corruption_experiment.py --experiment $EXPERIMENT --bias -t $TESTFRACT -b $BUCKETS -r $NRUNS --eta $ETA --max_iter $MAXITER --w_init -1 1 -v --result_root $RESROOT --index $INDEXLABEL --patience $PATIENCE
+python corruption_experiment.py --save_model --experiment $EXPERIMENT --bias -t $TESTFRACT -b $BUCKETS -r $NRUNS --eta $ETA --max_iter $MAXITER --w_init -1 1 -v --result_root $RESROOT --index $INDEXLABEL --patience $PATIENCE
 
 echo end time
 date
