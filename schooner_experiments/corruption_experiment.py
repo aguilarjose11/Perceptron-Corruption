@@ -116,7 +116,10 @@ def perceptron_data_corruption(
 
             history[buckets].append(score)
             # Used by Gallant's learning bound.
-            L_values.append(np.linalg.norm(model.W))
+            if sgd:
+                L_values.append(np.linalg.norm(model.coef_.T))
+            else:
+                L_values.append(np.linalg.norm(model.W))
             
         history['L'].append(L_values)
         if return_model:
