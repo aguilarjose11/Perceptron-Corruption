@@ -139,6 +139,7 @@ def perceptron_corruption_experiment(X,
                                      verbose,
                                      return_model: bool=False,
                                      sgd: bool=False,
+                                     smote: bool=False
                                      ):
     '''Conduct corruption experiment and report results
     
@@ -191,11 +192,19 @@ def perceptron_corruption_experiment(X,
         for train_i, test_i in sss.split(X, y):
             train_data, train_labels = X[train_i], y[train_i]
             test_data, test_labels = X[test_i], y[test_i]
+
+        # SMOTE
+        if smote:
+            sm = SMOTE(random_state=42)
+            train_data, train_labels = sm.fit_resample(train_data, train_labels)
+
         # We just need to bucketize the training data now (Testing data used as is)
         train_data   = np.array_split(train_data, n_buckets) # split rises exception if not even!
         train_data   = pd.Series(train_data) # Helps in keeping bucket structure
         train_labels = np.array_split(train_labels, n_buckets)
         train_labels = pd.Series(train_labels)
+
+
 
 
         ''' Conduct corruption and obtain scores '''
@@ -376,9 +385,7 @@ def obtain_data(args):
         labels.replace(1, 1, inplace=True)
     else:
         assert False, f"Invalid experiment selected: {experiment}"
-    if args.smote:
-        sm = SMOTE(random_state=42)
-        data, labels = sm.fit_resample(data, labels)
+
     return data, labels
 
 
@@ -423,6 +430,7 @@ if __name__ == '__main__':
         verbose         = args.verbose,
         return_model    = args.save_model,
         sgd             = args.sgd,
+        smote           = args.smote,
     )
     
     # Save experiment. If saving model, see history['best_model']
