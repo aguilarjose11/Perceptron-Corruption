@@ -16,6 +16,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn import datasets
 from sklearn.linear_model import Perceptron
+from sklearn.utils import shuffle
 from imblearn.over_sampling import SMOTE
 
 # Research Code
@@ -80,11 +81,7 @@ def perceptron_data_corruption(
             X       = np.concatenate(train_data[indices].values)
             Y       = np.concatenate(train_labels[indices].values)
             # Double check that the label array has correct shape
-            if len(Y.shape) >= 2 and Y.shape[1] != 1:
-                # Sometimes, labels will be in row form rather than column form
-                Y = Y.T
-            #import pdb; pdb.set_trace()
-
+            Y = Y.reshape(-1, 1)
 
             # Train model
             if sgd:
@@ -92,29 +89,33 @@ def perceptron_data_corruption(
                                    n_iter_no_change=model_params['patience'],
                                    eta0=model_params['eta'])
                 model.fit(X, Y)
-                pred = model.predict(test_data)
+                test_pred = model.predict(test_data)
+                train_pred = model.predict(X)
             else:
                 model = pn.PocketPerceptron(**model_params)
                 model.train(X, Y)
-                pred = model.solve(test_data)
+                test_pred = model.solve(test_data)
+                train_pred = model.solve(X)
+
 
             # Measure zero-one & store
-            score = accuracy_score(pred, test_labels)
-            #score_list.append(score)
+            test_score = accuracy_score(test_pred, test_labels)
+            train_score = accuracy_score(train_pred, Y)
 
-            if return_model\
-                and best_score is None\
-                or best_score < score:
+            if return_model:
+                # This is saved every epoch!
                 best_pred = {
                     'X': test_data,
                     'y': test_labels,
                     'model': model,
-                    'score': score,
-                    'pred': pred,
+                    'train_score': train_score,
+                    'train_pred': test_pred,
+                    'test_score': test_score,
+                    'test_pred': train_pred,
                 }
-                best_score = score
+                history['best_model'].append(best_pred)
 
-            history[buckets].append(score)
+            history[buckets].append((test_score, train_score))
             # Used by Gallant's learning bound.
             if sgd:
                 L_values.append(np.linalg.norm(model.coef_.T))
@@ -122,8 +123,6 @@ def perceptron_data_corruption(
                 L_values.append(np.linalg.norm(model.W))
             
         history['L'].append(L_values)
-        if return_model:
-            history['best_model'].append(best_pred)
 
         return history
     
@@ -176,8 +175,6 @@ def perceptron_corruption_experiment(X,
     if return_model:
         history['best_model'] = []
     
-
-    
     for run in range(n_runs):
         if verbose > 0:
             print(f"Run #{run}", flush=True)
@@ -192,13 +189,16 @@ def perceptron_corruption_experiment(X,
         for train_i, test_i in sss.split(X, y):
             train_data, train_labels = X[train_i], y[train_i]
             test_data, test_labels = X[test_i], y[test_i]
+        test_labels = test_labels.reshape(-1, 1)
 
         # SMOTE
         if smote:
             sm = SMOTE(random_state=42)
             train_data, train_labels = sm.fit_resample(train_data, train_labels)
+            train_labels = train_labels.reshape(-1, 1)
 
         # We just need to bucketize the training data now (Testing data used as is)
+        train_data, train_labels = shuffle(train_data, train_labels)
         train_data   = np.array_split(train_data, n_buckets) # split rises exception if not even!
         train_data   = pd.Series(train_data) # Helps in keeping bucket structure
         train_labels = np.array_split(train_labels, n_buckets)
@@ -337,6 +337,7 @@ def obtain_data(args):
 
         data = skin.to_numpy()
         labels = data_pkl['y']
+        labels = labels.to_numpy()
     
     elif experiment == 'SPECT':
         dataset = 'datasets/SPECT.pkl' if (args.data is None) else args.data
@@ -353,6 +354,7 @@ def obtain_data(args):
         
         labels.replace(0, -1, inplace=True)
         labels.replace(1, 1, inplace=True)
+        labels = labels.to_numpy()
 
     elif experiment == 'bankrupcy':
         dataset = 'datasets/TBankrupcy.pkl' if (args.data is None) else args.data
@@ -368,6 +370,7 @@ def obtain_data(args):
         
         labels.replace(0, -1, inplace=True)
         labels.replace(1, 1, inplace=True)
+        labels = labels.to_numpy()
     
     elif experiment == 'spambase':
         dataset = 'datasets/spambase.pkl' if (args.data is None) else args.data
@@ -383,6 +386,8 @@ def obtain_data(args):
         
         labels.replace(0, -1, inplace=True)
         labels.replace(1, 1, inplace=True)
+        labels = labels.to_numpy()
+
     else:
         assert False, f"Invalid experiment selected: {experiment}"
 
