@@ -14,17 +14,17 @@ Requirements & Installation
 ---------------------------
 Coming Soon...
 
-
-Reproducing Experiments from Paper
-----------------------------------
+Code Organization
+-----------------
 Coming Soon...
 
 Datasets
 --------
 Coming Soon; add a link to download files?
 
-
-
+Reproducing Experiments from Paper
+----------------------------------
+Coming Soon...
 
 <sup><i>[Jose E. Aguilar Escamilla](https://www.linkedin.com/in/jose-aguilar-escamilla/) -- [The 9th International Conference on Machine Learning, Optimization, and Data Science.](https://lod2023.icas.cc/)</sup></i>
 
