@@ -42,7 +42,7 @@ PATIENCE=40
 RESROOT=results # DO NOT forget to create the directory!
 TESTFRACT=0.2
 
-python corruption_experiment.py --smote --save_model --experiment $EXPERIMENT --bias -t $TESTFRACT -b $BUCKETS -r $NRUNS --eta $ETA --max_iter $MAXITER --w_init -1 1 -v --result_root $RESROOT --index $INDEXLABEL --patience $PATIENCE
+python corruption_experiment.py --save_model --experiment $EXPERIMENT --bias -t $TESTFRACT -b $BUCKETS -r $NRUNS --eta $ETA --max_iter $MAXITER --w_init -1 1 -v --result_root $RESROOT --index $INDEXLABEL --patience $PATIENCE
 
 echo end time
 date

@@ -88,6 +88,7 @@ def perceptron_data_corruption(
                 model = Perceptron(max_iter=model_params['max_iter'],
                                    n_iter_no_change=model_params['patience'],
                                    eta0=model_params['eta'])
+                import pdb; pdb.set_trace()
                 model.fit(X, Y)
                 test_pred = model.predict(test_data)
                 train_pred = model.predict(X)

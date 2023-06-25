@@ -8,3 +8,5 @@ __pycache__
 *.arff
 *.txt
 *.tar.gz
+.idea
+.spyproject
