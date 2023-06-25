@@ -2,3 +2,12 @@
 venv
 __pycache__
 .ipynb_checkpoints/
+*.pkl
+*.png
+*.csv
+*.arff
+*.txt
+*.tar.gz
+.idea
+.spyproject
+FinalResults
