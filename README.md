@@ -1,17 +1,31 @@
-McNair Scholars Research: Data Corruption and PAC Learning.
+LOD 2023: Perceptrons Under Verifiable Random Data Corruption
 ===========================================================
 
 Welcome!
 
-This repository contains the code used for the upcoming presentation at the National McNair Conference (March 15) and National Undergraduate Research Conference (NCUR -- April 7). This research has been sponsored by the Ronald E. McNair Post-Baccalaureate Achievement Program at The University of Oklahoma (OU) and supervised by [Dr. Dimitrios I. Diochnos](http://diochnos.com/) from the University of Oklahoma, Gallogly College of Engineering, School of Computer Science.
+This repository contains the code used for the upcoming paper Aguilar, J and Diochnos, D, Perceptrons Under Verifiable Random Data Corruption, In [LOD 2023](https://lod2023.icas.cc/). This research project was carried out by [Jose E. Aguilar Escamilla](https://www.linkedin.com/in/jose-aguilar-escamilla/) and was supervised by [Dr. Dimitrios I. Diochnos](http://diochnos.com/) at the [Gallgoly College of Engineering, School of Computer Science](https://www.ou.edu/coe/cs) @ [The University of Oklahoma (OU)](https://www.ou.edu/), and was part of the Ronald E. McNair Post-Baccalaureate Achievement Program.
 
-Description
------------
+Abstract
+--------
 
-The main objective of this project is the study of model robustness in the presence of data corruption. This can lead to a better understanding of the way in which data corruption affects model training.
+We study perceptrons when datasets are randomly corrupted by noise and  subsequently such corrupted examples are discarded from the training process.  Overall, perceptrons appear to be remarkably stable; their accuracy drops slightly when large portions of the original datasets have been excluded from training  as a response to verifiable random data corruption. Furthermore, we identify a real-world dataset where it appears to be the case that perceptrons require longer time for training, both in the general case, as well as, in the framework that we consider. Finally, we explore empirically a bound on the learning rate of Gallant's ''pocket'' algorithm for learning perceptrons and observe that the bound is tighter for non-linearly separable datasets.
 
-Another objective of this research effort is to uncover potential "removal-resistant" data poisoning in datasets. By performing random data corruption in datasets, we simulate the poisoning insertion and subsequent removal from a dataset. The PAC learning bounds of a PAC-learnable algorithm are then analysed to observe the behaviour of the true score against the non-noisy data.
+Requirements & Installation
+---------------------------
+Coming Soon...
+
+
+Reproducing Experiments from Paper
+----------------------------------
+Coming Soon...
+
+Datasets
+--------
+Coming Soon; add a link to download files?
 
 
 
-<sup><i>Jose E. Aguilar Escamilla -- Spring 2022 -- Gallgoly College of Engineering, School of Computer Science @ the University of Oklahoma (OU).</sup></i>
+
+<sup><i>[Jose E. Aguilar Escamilla](https://www.linkedin.com/in/jose-aguilar-escamilla/) -- [The 9th International Conference on Machine Learning, Optimization, and Data Science.](https://lod2023.icas.cc/)</sup></i>
+
+.

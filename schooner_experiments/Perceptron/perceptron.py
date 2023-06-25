@@ -136,7 +136,8 @@ class PocketPerceptron:
         X: array, 
         y: array
         ):
-
+        #import pdb; pdb.set_trace()
+        
         for E, C in zip(X, y):
             z = E @ self.pi
             pi_C    = -1 if z < 0 else +1
