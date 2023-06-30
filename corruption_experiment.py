@@ -33,7 +33,7 @@ def perceptron_data_corruption(
         history,
         seed,
         return_model: bool=False,
-        sgd: bool=False
+        skl: bool=False
         ):
         '''Corrupt given bucketized data
 
@@ -84,7 +84,7 @@ def perceptron_data_corruption(
             Y = Y.reshape(-1, 1)
 
             # Train model
-            if sgd:
+            if skl:
                 model = Perceptron(max_iter=model_params['max_iter'],
                                    n_iter_no_change=model_params['patience'],
                                    eta0=model_params['eta'])
@@ -117,7 +117,7 @@ def perceptron_data_corruption(
 
             history[buckets].append((test_score, train_score))
             # Used by Gallant's learning bound.
-            if sgd:
+            if skl:
                 L_values.append(np.linalg.norm(model.coef_.T))
             else:
                 L_values.append(np.linalg.norm(model.W))
@@ -137,7 +137,7 @@ def perceptron_corruption_experiment(X,
                                      seed,
                                      verbose,
                                      return_model: bool=False,
-                                     sgd: bool=False,
+                                     skl: bool=False,
                                      smote: bool=False
                                      ):
     '''Conduct corruption experiment and report results
@@ -218,7 +218,7 @@ def perceptron_corruption_experiment(X,
             history,
             seed=run + seed,
             return_model=return_model,
-            sgd=sgd,
+            skl=skl,
         )
         
     return history
@@ -259,7 +259,7 @@ Upper bounds per dimension to use when using a synthetic dataset. Shall be a lis
     parser.add_argument('--max_iter', type=int, default=1000, help='Maximum number of Perceptron iterations before convergance is assumed.')
     parser.add_argument('--w_init', nargs='+', type=float, default=[0.5, 0.5], help='Initial weight distribution [lower, upper] bounds.')
     parser.add_argument('--smote', action='store_true', default=False, help='Flag for applying SMOTE for class imbalance.')
-    parser.add_argument('--sgd', action='store_true', default=False, help='Flag for using Stochasitc Gradient Descent on Perceptron.')
+    parser.add_argument('--skl', action='store_true', default=False, help='Flag for using SKLearn\'s Perceptron instead. ONLY FOR TESTING PURPOSES.')
     # 
     parser.add_argument('-v', '--verbose',action='count', default=0, help='Verbosity of messages.' )
     parser.add_argument('-i', '--index', type=str, default='0', help='Inex of experiments. Helpful when running multiple repetitions of same experiment.')
@@ -434,7 +434,7 @@ if __name__ == '__main__':
         seed            = 42,
         verbose         = args.verbose,
         return_model    = args.save_model,
-        sgd             = args.sgd,
+        skl             = args.skl,
         smote           = args.smote,
     )
     
