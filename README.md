@@ -12,7 +12,14 @@ We study perceptrons when datasets are randomly corrupted by noise and  subseque
 
 Requirements & Installation
 ---------------------------
-Coming Soon...
+- numpy
+- pandas
+- scikit-learn
+- imbalanced-learn
+- jupyter
+- seaborn
+- matplotlib
+- tqdm
 
 Code Organization
 -----------------
