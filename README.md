@@ -49,11 +49,6 @@ These notebooks either display data generated from the experiments, or clean dat
 - `ResultAnalysis-MultiDimensional.ipynb`
   - Visualizes synthetic dataset results from experiments.
 
-Datasets
---------
-To be added soon!
-
-
 <sup><i>[Jose E. Aguilar Escamilla](https://www.linkedin.com/in/jose-aguilar-escamilla/) -- [The 9th International Conference on Machine Learning, Optimization, and Data Science.](https://lod2023.icas.cc/)</sup></i>
 
 .
