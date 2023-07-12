@@ -12,19 +12,42 @@ We study perceptrons when datasets are randomly corrupted by noise and  subseque
 
 Requirements & Installation
 ---------------------------
-Coming Soon...
+- numpy
+- pandas
+- scikit-learn
+- imbalanced-learn
+- jupyter
+- seaborn
+- matplotlib
+- tqdm
 
 Code Organization
 -----------------
-Coming Soon...
+The code is made up of 2 main groups:
+- Perceptron corruption experiment code
+- Jupyter notebooks for displaying results and cleaning datasets.
 
-Datasets
---------
-Coming Soon; add a link to download files?
+### Perceptron Experiment Code
+The main files containing experiment code are:
+- `corruption_experiment.py`
+  - Contains code used for creating perceptrons, pulling in data, and performing an experiment.
+- `experiment_execution.sh`
+  - Experiment configuration file where the experiment is defined. This is what is launched to run an experiment.
+- `Perceptron` Package
+  - Contains the code defining the Perceptron pocket algorithm.
 
-Reproducing Experiments from Paper
-----------------------------------
-Coming Soon...
+### Jupyter Notebooks
+These notebooks either display data generated from the experiments, or clean data/generate synthetic datasets.
+- `DataGeneration.ipynb`
+  - Code used for generating linearly (and non) separable data.
+- `Dataset Analysis.ipynb`
+  - Shows basic information of SPECT, Bankruptcy, and Spambase datasets, storing them as pkl files.
+- `DataVisualization.ipynb`
+  - Used to observe changes in datasets by SMOTE.
+- `Result_Visualizer.ipynb`
+  - Visualizes Real-World dataset results from experiments.
+- `ResultAnalysis-MultiDimensional.ipynb`
+  - Visualizes synthetic dataset results from experiments.
 
 <sup><i>[Jose E. Aguilar Escamilla](https://www.linkedin.com/in/jose-aguilar-escamilla/) -- [The 9th International Conference on Machine Learning, Optimization, and Data Science.](https://lod2023.icas.cc/)</sup></i>
 
